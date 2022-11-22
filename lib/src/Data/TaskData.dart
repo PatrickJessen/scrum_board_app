@@ -1,31 +1,21 @@
 import 'dart:ffi';
-
+import '../Board.dart';
 import '../Task.dart';
 
-class TaskData
-{
-  void CreateTask(Task task)
-  {
+class TaskData {
+  void CreateTask(Task task) {}
 
-  }
+  void UpdateTask(Task task) {}
 
-  Task UpdateTask(Task task)
-  {
-    return Task("", 1);
-  }
-
-  Task GetTask(Task task)
-  {
+  Task GetTask(Task task) {
     return task;
   }
 
-  void DeleteTask(int id)
-  {
+  void DeleteTask(int id) {}
 
-  }
-
-  int GetLatestTaskID()
-  {
+  int GetLatestTaskID() {
     return 0;
   }
+
+  void CreateBoardState(BoardState state) {}
 }

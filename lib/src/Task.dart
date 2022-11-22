@@ -1,24 +1,10 @@
 import 'User.dart';
 
-enum TaskState
-{
-  TO_DO,
-  IN_PROGRESS,
-  REVIEW,
-  DONE
-}
+enum TaskState { TO_DO, IN_PROGRESS, REVIEW, DONE }
 
-enum TaskPriority
-{
-  VERY_LOW,
-  LOW,
-  MEDIUM,
-  HIGH,
-  VERY_HIGH
-}
+enum TaskPriority { VERY_LOW, LOW, MEDIUM, HIGH, VERY_HIGH }
 
-class Task
-{
+class Task {
   int? id;
   String? title;
   String? description;
@@ -27,9 +13,8 @@ class Task
   TaskState? state;
   TaskPriority? priority;
 
-  Task(String title, int id)
-  {
+  Task(String title, TaskState state) {
     this.title = title;
-    this.id = id;
+    this.state = state;
   }
 }
