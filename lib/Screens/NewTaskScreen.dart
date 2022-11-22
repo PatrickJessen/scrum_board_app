@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import '../src/Task.dart';
 
 class NewTaskWidget extends StatefulWidget {
-  const NewTaskWidget({super.key});
+  const NewTaskWidget({Key key}) : super(key: key);
 
   @override
   State<NewTaskWidget> createState() => NewTaskScreen();
 }
 
 class NewTaskScreen extends State<NewTaskWidget> {
-  Task? task;
+  Task task;
   String statesVal = "TODO";
   List<String> states = ["TODO", "IN PROGRESS", "REVIEW", "DONE"];
   @override
@@ -33,9 +33,9 @@ class NewTaskScreen extends State<NewTaskWidget> {
           }).toList(),
           // After selecting the desired option,it will
           // change button value to selected value
-          onChanged: (String? newValue) {
+          onChanged: (String newValue) {
             setState(() {
-              statesVal = newValue!;
+              statesVal = newValue;
             });
           },
         ),

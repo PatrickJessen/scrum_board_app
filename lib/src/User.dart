@@ -2,6 +2,6 @@
 
 class User
 {
-  String? firstName;
-  String? lastName;
+  String firstName;
+  String lastName;
 }
