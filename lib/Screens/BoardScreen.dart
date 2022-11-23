@@ -5,6 +5,7 @@ import 'package:boardview/boardview.dart';
 import 'package:boardview/boardview_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:scrum_board_app/src/Task.dart';
+import 'package:scrum_board_app/src/api/BoardApi.dart';
 import '../src/Board.dart';
 import '../src/BoardController.dart';
 
@@ -32,8 +33,15 @@ class BoardWidget extends StatefulWidget {
 
 class BoardScreen extends State<BoardWidget> {
   BoardController board = BoardController();
-
+  Future<List<BoardState>> boardStates;
   final BoardViewController boardViewController = BoardViewController();
+  BoardApi api = BoardApi();
+  
+  @override
+  void initState() {
+    super.initState();
+    //boardStates = api.FetchBoard();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +50,25 @@ class BoardScreen extends State<BoardWidget> {
     for (int i = 0; i < board.board.states.length; i++) {
       lists.add(_createBoardList(board.board.states[i]));
     }
-
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: BoardView(
+    return Scaffold(
+      body: Container(
+      /*child: BoardView(
         lists: lists,
         boardViewController: boardViewController,
+      ),*/
+        child: FutureBuilder(
+          future: api.FetchBoard(),
+          builder: (f, snapshot){
+            if (snapshot.hasData){
+              for (var i in snapshot.data)
+                lists.add(_createBoardList(i));
+              return BoardView(
+                lists: lists,
+                boardViewController: boardViewController,
+              );
+            }
+          },
+        ),
       ),
     );
   }

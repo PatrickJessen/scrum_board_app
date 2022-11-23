@@ -8,7 +8,7 @@ class BoardController {
   TaskData data;
   BoardApi api = BoardApi();
   BoardController() {
-    //board = api.FetchBoard() as Board;
+    board = Board();
     data = TaskData();
     /*AddNewBoardState(TaskState.TO_DO, "TO DO");
     AddNewBoardState(TaskState.IN_PROGRESS, "IN PROGRESS");
@@ -21,7 +21,7 @@ class BoardController {
     AddNewTaskToBoard(Task("Done Task2", TaskState.DONE));*/
   }
 
-  void ChangeTask(Task task, TaskState state) {
+  /*void ChangeTask(Task task, TaskState state) {
     for (int i = 0; i < board.states.length; i++) {
       for (int j = 0; j < board.states[i].tasks.length; j++) {
         if (board.states[i].tasks[j].id == task.id) {
@@ -49,5 +49,5 @@ class BoardController {
         return;
       }
     }
-  }
+  }*/
 }
