@@ -1,14 +1,16 @@
 import 'Board.dart';
 import 'Task.dart';
 import 'Data/TaskData.dart';
+import 'api/BoardApi.dart';
 
 class BoardController {
   Board board;
   TaskData data;
+  BoardApi api = BoardApi();
   BoardController() {
-    this.board = Board();
+    //board = api.FetchBoard() as Board;
     data = TaskData();
-    AddNewBoardState(TaskState.TO_DO, "TO DO");
+    /*AddNewBoardState(TaskState.TO_DO, "TO DO");
     AddNewBoardState(TaskState.IN_PROGRESS, "IN PROGRESS");
     AddNewBoardState(TaskState.REVIEW, "REVIEW");
     AddNewBoardState(TaskState.DONE, "DONE");
@@ -16,7 +18,7 @@ class BoardController {
     AddNewTaskToBoard(Task("Todo Task2", TaskState.TO_DO));
     AddNewTaskToBoard(Task("In Progress Task", TaskState.IN_PROGRESS));
     AddNewTaskToBoard(Task("Done Task", TaskState.DONE));
-    AddNewTaskToBoard(Task("Done Task2", TaskState.DONE));
+    AddNewTaskToBoard(Task("Done Task2", TaskState.DONE));*/
   }
 
   void ChangeTask(Task task, TaskState state) {
