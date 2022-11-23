@@ -38,7 +38,7 @@ class BoardScreen extends State<BoardWidget> {
   @override
   Widget build(BuildContext context) {
     List<BoardList> lists = List<BoardList>.empty(growable: true);
-    
+
     for (int i = 0; i < board.board.states.length; i++) {
       lists.add(_createBoardList(board.board.states[i]));
     }
@@ -53,8 +53,7 @@ class BoardScreen extends State<BoardWidget> {
   }
 
   BoardItem buildBoardItem(Task itemObject) {
-    TaskState ConvertStringToTaskState(String str)
-    {
+    TaskState ConvertStringToTaskState(String str) {
       switch (str) {
         case "TODO":
           return TaskState.TO_DO;
@@ -72,65 +71,63 @@ class BoardScreen extends State<BoardWidget> {
           return TaskState.TO_DO;
       }
     }
-    return BoardItem(
-        onStartDragItem: (int listIndex, int itemIndex, BoardItemState state) {
 
-        },
+    return BoardItem(
+        onStartDragItem:
+            (int listIndex, int itemIndex, BoardItemState state) {},
         onDropItem: (int listIndex, int itemIndex, int oldListIndex,
-          int oldItemIndex, BoardItemState state) {
-          
+            int oldItemIndex, BoardItemState state) {
           //Used to update our local item data
           var item = board.board.states[oldListIndex].tasks[oldItemIndex];
           board.board.states[oldListIndex].tasks.removeAt(oldItemIndex);
           // can get the title from here to set the enum state
-          item.state = ConvertStringToTaskState(board.board.states[listIndex].title);
+          item.state =
+              ConvertStringToTaskState(board.board.states[listIndex].title);
           print(item.state);
           board.board.states[listIndex].tasks.insert(itemIndex, item);
         },
-        onTapItem: (int listIndex, int itemIndex, BoardItemState state) async {
-        },
+        onTapItem:
+            (int listIndex, int itemIndex, BoardItemState state) async {},
         item: Container(
           margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
           child: Card(
             elevation: 0,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(itemObject.title.toString(), style: TextStyle(
-                    height: 1.5,
-                    color: Color(0xff2F334B),
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold
-                  ),),
-                  SizedBox(height: 10.0,),
-                  Text(itemObject.description.toString(), style: TextStyle(
-                    height: 1.5,
-                    color: Color(0xff2F334B),
-                    fontSize: 16
-                  ),),
-                ],
-              )
-            ),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      itemObject.title.toString(),
+                      style: TextStyle(
+                          height: 1.5,
+                          color: Color(0xff2F334B),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      itemObject.description.toString(),
+                      style: TextStyle(
+                          height: 1.5, color: Color(0xff2F334B), fontSize: 16),
+                    ),
+                  ],
+                )),
           ),
         ));
   }
 
   Widget _createBoardList(BoardState state) {
     List<BoardItem> items = List<BoardItem>.empty(growable: true);
-      for (int i = 0; i < state.tasks.length; i++){
-        items.insert(i, buildBoardItem(state.tasks[i]));
-      }
-
+    for (int i = 0; i < state.tasks.length; i++) {
+      items.insert(i, buildBoardItem(state.tasks[i]));
+    }
 
     return BoardList(
-      onStartDragList: (dynamic listIndex) {
-
-      },
-      onTapList: (dynamic listIndex) async {
-
-      },
+      onStartDragList: (dynamic listIndex) {},
+      onTapList: (dynamic listIndex) async {},
       onDropList: (dynamic listIndex, dynamic oldListIndex) {
         //Update our local list data
         var list = board.board.states[oldListIndex];
@@ -141,18 +138,15 @@ class BoardScreen extends State<BoardWidget> {
       backgroundColor: Color(0xffECEDFC),
       header: [
         Expanded(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            child: Text(
-              state.title,
-              style: TextStyle(
-                fontSize: 23,
-                fontWeight: FontWeight.bold,
-                color: Color(0xff2F334B)
-              ),
-            )
-          )
-        ),
+            child: Container(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  state.title,
+                  style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff2F334B)),
+                ))),
       ],
       items: items,
     );
