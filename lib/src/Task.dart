@@ -25,12 +25,14 @@ class Task {
   }
 
   factory Task.fromJson(Map<String, dynamic> json) {
-    return Task(
+    Task task = Task(
         json['title'],
         json['description'],
         json['points'],
         json['assignedTo'],
         StateUtils.ConvertIntToTaskState(json['state']),
         StateUtils.ConvertIntToTaskPriority(json['priority']));
+        task.id = json['Id'];
+    return task;
   }
 }

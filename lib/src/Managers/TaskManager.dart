@@ -7,4 +7,14 @@ class TaskManager {
   void AddTask(Task task) {
     access.PostTask(task);
   }
+
+  void UpdateTask(Task task)
+  {
+    access.UpdateTask(task);
+  }
+
+  void DeleteTask(int id)
+  {
+    access.DeleteTask(id);
+  }
 }

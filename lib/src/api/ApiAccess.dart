@@ -9,15 +9,12 @@ class ApiAccess {
   Future<List<BoardState>> FetchBoard() async {
     final uri = Uri.parse('https://localhost:7132/GetScrumboard');
     Response response = await get(uri);
-    sleep(Duration(seconds: 1));
-    while (response.statusCode != 200) {
-      response = await get(uri);
-      sleep(Duration(seconds: 1));
-    }
     List<dynamic> parsedListJson = json.decode(response.body)['states'];
-    List<BoardState> list =
-        (parsedListJson).map((data) => BoardState.fromJson(data)).toList();
-    print(list.length);
+    List<BoardState> list;
+    list = (parsedListJson).map((data) => BoardState.fromJson(data)).toList();
+    if (list.isEmpty){
+      return parsedListJson as List<BoardState>;
+    }
     return SortStates(list);
   }
 
@@ -31,6 +28,34 @@ class ApiAccess {
     http.post(
         Uri.parse(
             'https://localhost:7132/PostTask?Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&State=$state&Priority=$prio'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        });
+  }
+
+  void UpdateTask(Task task){
+    //https://localhost:7132/UpdateTask?Id=1&Title=newest%20title&Description=newest%20desc&Points=3&AssignedTo=me&State=0&Priority=2
+    int id = task.id;
+    String title = task.title;
+    String desc = task.description;
+    String assign = task.assignedTo;
+    int points = task.points;
+    int state = task.state.index;
+    int prio = task.priority.index;
+    http.put(
+        Uri.parse(
+            'https://localhost:7132/UpdateTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&State=$state&Priority=$prio'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        });
+  }
+
+  void DeleteTask(int id)
+  {
+    //https://localhost:7132/DeleteTask?id=1
+    http.put(
+        Uri.parse(
+            'https://localhost:7132/DeleteTask?id=$id'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });

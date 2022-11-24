@@ -17,11 +17,14 @@ class BoardState {
   }
 
   factory BoardState.fromJson(Map<String, dynamic> jsonObj) {
-    String test = jsonObj['title'];
-    dynamic f = jsonObj['tasks'][0];
     List<dynamic> parsedListJson = jsonObj['tasks'];
     List<Task> test2 =
         (parsedListJson).map((data) => Task.fromJson(data)).toList();
+    if (parsedListJson.isEmpty){
+      return BoardState(
+        jsonObj['title'],
+        StateUtils.ConvertIntToTaskState(jsonObj['state']), List<Task>.empty(growable: true));
+    }
     return BoardState(
         jsonObj['title'],
         StateUtils.ConvertIntToTaskState(jsonObj['state']),

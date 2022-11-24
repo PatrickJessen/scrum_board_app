@@ -61,7 +61,11 @@ class NewTaskScreen extends State<NewTaskWidget> {
                                     obscureText: false,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
-                                      labelText: "Title",
+                                      label: Text.rich(
+                                        TextSpan(children: <InlineSpan>[
+                                          WidgetSpan(child: Text("Title")),
+                                        ]),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -74,7 +78,12 @@ class NewTaskScreen extends State<NewTaskWidget> {
                                     obscureText: false,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
-                                      labelText: "Description",
+                                      label: Text.rich(
+                                        TextSpan(children: <InlineSpan>[
+                                          WidgetSpan(
+                                              child: Text("Description")),
+                                        ]),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -87,7 +96,11 @@ class NewTaskScreen extends State<NewTaskWidget> {
                                     obscureText: false,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
-                                      labelText: "Assign To",
+                                      label: Text.rich(
+                                        TextSpan(children: <InlineSpan>[
+                                          WidgetSpan(child: Text("Assign To")),
+                                        ]),
+                                      ),
                                     ),
                                   ),
                                 ),
