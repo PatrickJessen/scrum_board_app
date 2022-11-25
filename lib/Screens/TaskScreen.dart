@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scrum_board_app/Screens/DropDownMenu.dart';
 
 import '../src/Task.dart';
 import 'BoardScreen.dart';
@@ -25,7 +26,6 @@ class TaskScreen extends State<TaskScreenWidget> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     task = ModalRoute.of(context).settings.arguments;
@@ -47,7 +47,12 @@ class TaskScreen extends State<TaskScreenWidget> {
               ],
             ),
             Positioned(
+              left: 260,
+              child: Text("Title"),
+            ),
+            Positioned(
                 left: 160,
+                top: 20,
                 child: Column(
                   children: [
                     Container(
@@ -62,13 +67,21 @@ class TaskScreen extends State<TaskScreenWidget> {
                         color: Colors.white,
                       ),
                       child: Center(
-                        child: EditText(text: task.title),
+                        child: EditText(
+                          type: StringType.TITLE,
+                          task: task,
+                        ),
                       ),
                     ),
                   ],
                 )),
             Positioned(
+              left: 540,
+              child: Text("Description"),
+            ),
+            Positioned(
                 left: 460,
+                top: 20,
                 child: Column(
                   children: [
                     Container(
@@ -83,8 +96,115 @@ class TaskScreen extends State<TaskScreenWidget> {
                         color: Colors.white,
                       ),
                       child: Center(
-                        child: EditText(text: task.description),
+                          child: EditText(
+                              type: StringType.DESCRIPTION, task: task)),
+                    ),
+                  ],
+                )),
+            Positioned(
+              left: 840,
+              child: Text("Assigned To"),
+            ),
+            Positioned(
+                left: 760,
+                top: 20,
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.topCenter,
+                      width: 240.0,
+                      height: 42.0,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                              width: 1.0, color: Colors.lightBlue.shade600),
+                        ),
+                        color: Colors.white,
                       ),
+                      child: Center(
+                          child: EditText(
+                              type: StringType.ASSIGNEDTO, task: task)),
+                    ),
+                  ],
+                )),
+            Positioned(
+              left: 260,
+              top: 100,
+              child: Text("State"),
+            ),
+            Positioned(
+                left: 160,
+                top: 120,
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.topCenter,
+                      width: 240.0,
+                      height: 42.0,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                              width: 1.0, color: Colors.lightBlue.shade600),
+                        ),
+                        color: Colors.white,
+                      ),
+                      child: Center(
+                          child:
+                              DropDownMenu(task: task, type: MenuType.STATE)),
+                    ),
+                  ],
+                )),
+            Positioned(
+              left: 540,
+              top: 100,
+              child: Text("Priority"),
+            ),
+            Positioned(
+                left: 460,
+                top: 120,
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.topCenter,
+                      width: 240.0,
+                      height: 42.0,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                              width: 1.0, color: Colors.lightBlue.shade600),
+                        ),
+                        color: Colors.white,
+                      ),
+                      child: Center(
+                          child: DropDownMenu(
+                              task: task, type: MenuType.PRIORITY)),
+                    ),
+                  ],
+                )),
+            Positioned(
+              left: 840,
+              top: 100,
+              child: Text("Points"),
+            ),
+            Positioned(
+                left: 760,
+                top: 120,
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.topCenter,
+                      width: 240.0,
+                      height: 42.0,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                              width: 1.0, color: Colors.lightBlue.shade600),
+                        ),
+                        color: Colors.white,
+                      ),
+                      child: Center(
+                          child:
+                              DropDownMenu(task: task, type: MenuType.POINTS)),
                     ),
                   ],
                 )),

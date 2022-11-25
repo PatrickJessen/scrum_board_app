@@ -1,6 +1,34 @@
 import 'Task.dart';
 
 class StateUtils {
+  static String ConvertTaskStateToString(TaskState state) {
+    switch (state) {
+      case TaskState.TO_DO:
+        return "TODO";
+      case TaskState.IN_PROGRESS:
+        return "IN PROGRESS";
+      case TaskState.REVIEW:
+        return "REVIEW";
+      default:
+        return "DONE";
+    }
+  }
+
+  static String ConvertTaskPriorityToString(TaskPriority state) {
+    switch (state) {
+      case TaskPriority.VERY_LOW:
+        return "VERY LOW";
+      case TaskPriority.LOW:
+        return "LOW";
+      case TaskPriority.MEDIUM:
+        return "MEDIUM";
+      case TaskPriority.HIGH:
+        return "HIGH";
+      default:
+        return "VERY HIGH";
+    }
+  }
+
   static TaskState ConvertStringToTaskState(String str) {
     switch (str) {
       case "TODO":
@@ -41,13 +69,13 @@ class StateUtils {
 
   static TaskState ConvertIntToTaskState(int val) {
     switch (val) {
-      case 1:
+      case 0:
         return TaskState.TO_DO;
         break;
-      case 2:
+      case 1:
         return TaskState.IN_PROGRESS;
         break;
-      case 3:
+      case 2:
         return TaskState.REVIEW;
         break;
       default:

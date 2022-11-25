@@ -32,7 +32,7 @@ class Task {
         json['assignedTo'],
         StateUtils.ConvertIntToTaskState(json['state']),
         StateUtils.ConvertIntToTaskPriority(json['priority']));
-        task.id = json['Id'];
+    task.id = json['id'] as int;
     return task;
   }
 }

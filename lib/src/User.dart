@@ -1,7 +1,6 @@
+class User {
+  String username;
+  bool isScrumMaster;
 
-
-class User
-{
-  String firstName;
-  String lastName;
+  User(this.username, this.isScrumMaster);
 }

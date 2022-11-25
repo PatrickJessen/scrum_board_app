@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import '../Board.dart';
 import '../Task.dart';
+import '../User.dart';
 
 class ApiAccess {
   Future<List<BoardState>> FetchBoard() async {
@@ -12,7 +13,7 @@ class ApiAccess {
     List<dynamic> parsedListJson = json.decode(response.body)['states'];
     List<BoardState> list;
     list = (parsedListJson).map((data) => BoardState.fromJson(data)).toList();
-    if (list.isEmpty){
+    if (list.isEmpty) {
       return parsedListJson as List<BoardState>;
     }
     return SortStates(list);
@@ -33,7 +34,7 @@ class ApiAccess {
         });
   }
 
-  void UpdateTask(Task task){
+  void UpdateTask(Task task) {
     //https://localhost:7132/UpdateTask?Id=1&Title=newest%20title&Description=newest%20desc&Points=3&AssignedTo=me&State=0&Priority=2
     int id = task.id;
     String title = task.title;
@@ -50,12 +51,9 @@ class ApiAccess {
         });
   }
 
-  void DeleteTask(int id)
-  {
+  void DeleteTask(int id) {
     //https://localhost:7132/DeleteTask?id=1
-    http.put(
-        Uri.parse(
-            'https://localhost:7132/DeleteTask?id=$id'),
+    http.put(Uri.parse('https://localhost:7132/DeleteTask?id=$id'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
@@ -80,5 +78,19 @@ class ApiAccess {
       }
     }
     return tempList;
+  }
+
+  Future<User> Login(String username, String password) async {
+    Response response = await http.post(
+        Uri.parse(
+            'https://localhost:7132/LoginUser?username=$username&password=$password'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        });
+    dynamic parsedJson = json.decode(response.body);
+    if (parsedJson['username'] == null) {
+      return null;
+    }
+    return User(parsedJson['username'], parsedJson['isScrumMaster']);
   }
 }

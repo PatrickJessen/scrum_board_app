@@ -1,25 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:scrum_board_app/src/Managers/TaskManager.dart';
+
+import '../src/Task.dart';
+
+enum StringType { TITLE, DESCRIPTION, ASSIGNEDTO }
 
 class EditText extends StatefulWidget {
-  final String text;
-  const EditText({Key key, this.text}) : super(key: key);
+  final StringType type;
+  final Task task;
+  const EditText({Key key, this.type, this.task}) : super(key: key);
 
   @override
-  State<EditText> createState() => _EditTextState(text);
+  State<EditText> createState() => _EditTextState(type, this.task);
 }
 
 class _EditTextState extends State<EditText> {
-  String text;
+  Task task;
+  StringType type;
   bool isEditing = false;
   TextEditingController controller;
-  
-  _EditTextState(this.text);
 
+  _EditTextState(this.type, this.task);
 
+  TaskManager manager;
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController(text: text);
+    setState(() {
+      switch (type) {
+        case StringType.TITLE:
+          controller = TextEditingController(text: task.title);
+          break;
+        case StringType.DESCRIPTION:
+          controller = TextEditingController(text: task.description);
+          break;
+        case StringType.ASSIGNEDTO:
+          controller = TextEditingController(text: task.assignedTo);
+          break;
+      }
+      manager = TaskManager();
+    });
   }
 
   @override
@@ -32,10 +52,24 @@ class _EditTextState extends State<EditText> {
       return Center(
         child: TextField(
           onSubmitted: (newValue) {
-            setState(() {  
-              text = newValue;
+            setState(() {
+              String val = newValue;
+              if (!val.isEmpty) {
+                switch (type) {
+                  case StringType.TITLE:
+                    task.title = val;
+                    break;
+                  case StringType.DESCRIPTION:
+                    task.description = val;
+                    break;
+                  case StringType.ASSIGNEDTO:
+                    task.assignedTo = val;
+                    break;
+                }
+              }
               isEditing = false;
             });
+            manager.UpdateTask(task);
           },
           autofocus: true,
           controller: controller,
@@ -44,12 +78,12 @@ class _EditTextState extends State<EditText> {
     }
     return InkWell(
         onTap: () {
-          setState(() {     
+          setState(() {
             isEditing = true;
           });
         },
         child: Text(
-          text,
+          controller.text,
           style: const TextStyle(
             color: Colors.black,
             fontSize: 18.0,

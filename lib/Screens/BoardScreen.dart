@@ -8,6 +8,8 @@ import 'package:scrum_board_app/src/Managers/BoardManager.dart';
 import 'package:scrum_board_app/src/Task.dart';
 import 'package:scrum_board_app/src/api/ApiAccess.dart';
 import '../src/Board.dart';
+import '../src/Managers/TaskManager.dart';
+import '../src/StateUtils.dart';
 import 'NewTaskScreen.dart';
 import 'TaskScreen.dart';
 
@@ -38,12 +40,14 @@ class BoardScreen extends State<BoardWidget> {
   BoardManager manager = BoardManager();
   Future<List<BoardState>> boardStates;
   final BoardViewController boardViewController = BoardViewController();
+  TaskManager taskManager;
 
   @override
   void initState() {
     super.initState();
-    setState(() {    
+    setState(() {
       boardStates = manager.FetchBoard();
+      taskManager = TaskManager();
     });
   }
 
@@ -102,15 +106,17 @@ class BoardScreen extends State<BoardWidget> {
           var item = snapshot.data[oldListIndex].tasks[oldItemIndex] as Task;
           snapshot.data[oldListIndex].tasks.removeAt(oldItemIndex);
           // can get the title from here to set the enum state
-          //item.state = ConvertStringToTaskState(board.board.states[listIndex].title);
+          item.state = StateUtils.ConvertStringToTaskState(
+              snapshot.data[listIndex].title);
           snapshot.data[listIndex].tasks.insert(itemIndex, item);
+          taskManager.UpdateTask(item);
         },
-        onTapItem:
-            (int listIndex, int itemIndex, BoardItemState state) async {
-              Task t = snapshot.data[listIndex].tasks[itemIndex] as Task;
-              Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => TaskScreenWidget(), settings: RouteSettings(arguments: t)));
-            },
+        onTapItem: (int listIndex, int itemIndex, BoardItemState state) async {
+          Task t = snapshot.data[listIndex].tasks[itemIndex];
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => TaskScreenWidget(),
+              settings: RouteSettings(arguments: t)));
+        },
         item: Container(
           margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
           child: Card(
