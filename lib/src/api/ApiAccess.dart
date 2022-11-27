@@ -88,7 +88,7 @@ class ApiAccess {
           'Content-Type': 'application/json; charset=UTF-8',
         });
     dynamic parsedJson = json.decode(response.body);
-    if (parsedJson['username'] == null) {
+    if (response.statusCode != 200){
       return null;
     }
     return User(parsedJson['username'], parsedJson['isScrumMaster']);
