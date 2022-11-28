@@ -3,4 +3,6 @@ class User {
   bool isScrumMaster;
 
   User(this.username, this.isScrumMaster);
+
+  static User currentUser;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scrum_board_app/Screens/DropDownMenu.dart';
+import 'package:scrum_board_app/src/Managers/TaskManager.dart';
 
 import '../src/Task.dart';
 import 'BoardScreen.dart';
@@ -14,7 +15,7 @@ class TaskScreenWidget extends StatefulWidget {
 
 class TaskScreen extends State<TaskScreenWidget> {
   Task task;
-
+  TaskManager tm = TaskManager();
   @override
   void initState() {
     super.initState();
@@ -42,6 +43,13 @@ class TaskScreen extends State<TaskScreenWidget> {
                   child: Container(
                     alignment: Alignment.topLeft,
                     child: ReturnButton(),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: DeleteButton(),
                   ),
                 ),
               ],
@@ -229,6 +237,26 @@ class TaskScreen extends State<TaskScreenWidget> {
           ),
         ),
         child: const Text('Return'),
+      ),
+    );
+  }
+
+  Widget DeleteButton() {
+    return Positioned(
+      top: 60,
+      left: 60,
+      child: ElevatedButton(
+        onPressed: () {
+          tm.DeleteTask(task.id);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => BoardWidget()));
+        },
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12), // <-- Radius
+          ),
+        ),
+        child: const Text('Delete'),
       ),
     );
   }

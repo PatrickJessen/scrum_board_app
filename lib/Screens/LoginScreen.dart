@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:scrum_board_app/Screens/BoardScreen.dart';
 import 'package:scrum_board_app/src/Managers/LoginManager.dart';
 
 import '../src/User.dart';
@@ -16,7 +17,8 @@ class _LoginScreenState extends State<LoginScreen> {
   LoginManager login;
   String username = "";
   String password = "";
-  User user;
+  String errorMsg = "";
+
   @override
   void initState() {
     super.initState();
@@ -34,8 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               padding: EdgeInsets.only(left: 35, top: 130),
               child: Text(
-                'Welcome',
-                style: TextStyle(color: Colors.white, fontSize: 33),
+                errorMsg,
+                style: TextStyle(
+                    color: Color.fromARGB(255, 255, 0, 0), fontSize: 33),
               ),
             ),
             SingleChildScrollView(
@@ -96,13 +99,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: IconButton(
                                     color: Colors.white,
                                     onPressed: () async {
-                                      final data = await login.Login(username, password);
-                                      setState(() => user = data);
+                                      final data =
+                                          await login.Login(username, password);
+                                      setState(() => User.currentUser = data);
 
-                                      if (user != null){
-                                        print("woop");
+                                      if (User.currentUser != null) {
+                                        errorMsg = "";
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BoardWidget()));
                                       } else {
-                                        print("no woop");
+                                        setState(() {
+                                          errorMsg =
+                                              "Username and password did not match!";
+                                        });
                                       }
                                     },
                                     icon: Icon(

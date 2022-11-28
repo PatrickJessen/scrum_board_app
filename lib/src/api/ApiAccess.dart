@@ -7,16 +7,27 @@ import '../Task.dart';
 import '../User.dart';
 
 class ApiAccess {
-  Future<List<BoardState>> FetchBoard() async {
-    final uri = Uri.parse('https://localhost:7132/GetScrumboard');
+  Future<Board> FetchBoard(String boardTitle) async {
+    final uri = Uri.parse(
+        'https://localhost:7132/GetScrumboard?boardTitle=$boardTitle');
     Response response = await get(uri);
-    List<dynamic> parsedListJson = json.decode(response.body)['states'];
-    List<BoardState> list;
-    list = (parsedListJson).map((data) => BoardState.fromJson(data)).toList();
-    if (list.isEmpty) {
-      return parsedListJson as List<BoardState>;
+    List<dynamic> parsedListJson = json.decode(response.body)['tasks'];
+    Board board = Board.fromJson(json.decode(response.body));
+    //board.tasks = (parsedListJson).map((data) => Board.fromJson(data)).toList();
+    if (board == null) {
+      return new Board("null", List<Task>.empty());
     }
-    return SortStates(list);
+    return board;
+  }
+
+  Future<List<String>> FetchAllSprintNames() async {
+    final uri = Uri.parse('https://localhost:7132/GetSprintNames');
+    Response response = await get(uri);
+    //List<String> parsedListJson = json.decode(response.body);
+    List<String> stringList =
+        (jsonDecode(response.body) as List<dynamic>).cast<String>();
+
+    return stringList;
   }
 
   void PostTask(Task task) {
@@ -53,7 +64,7 @@ class ApiAccess {
 
   void DeleteTask(int id) {
     //https://localhost:7132/DeleteTask?id=1
-    http.put(Uri.parse('https://localhost:7132/DeleteTask?id=$id'),
+    http.delete(Uri.parse('https://localhost:7132/DeleteTask?id=$id'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
@@ -88,7 +99,7 @@ class ApiAccess {
           'Content-Type': 'application/json; charset=UTF-8',
         });
     dynamic parsedJson = json.decode(response.body);
-    if (response.statusCode != 200){
+    if (response.statusCode != 200) {
       return null;
     }
     return User(parsedJson['username'], parsedJson['isScrumMaster']);

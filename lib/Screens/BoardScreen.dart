@@ -4,12 +4,14 @@ import 'package:boardview/board_list.dart';
 import 'package:boardview/boardview.dart';
 import 'package:boardview/boardview_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:scrum_board_app/Screens/LoginScreen.dart';
 import 'package:scrum_board_app/src/Managers/BoardManager.dart';
 import 'package:scrum_board_app/src/Task.dart';
 import 'package:scrum_board_app/src/api/ApiAccess.dart';
 import '../src/Board.dart';
 import '../src/Managers/TaskManager.dart';
 import '../src/StateUtils.dart';
+import '../src/User.dart';
 import 'NewTaskScreen.dart';
 import 'TaskScreen.dart';
 
@@ -36,30 +38,42 @@ class BoardWidget extends StatefulWidget {
 }
 
 class BoardScreen extends State<BoardWidget> {
-  Board board = Board();
+  Future<Board> board = null;
   BoardManager manager = BoardManager();
-  Future<List<BoardState>> boardStates;
   final BoardViewController boardViewController = BoardViewController();
   TaskManager taskManager;
+
+  List<String> states = ["TODO", "IN PROGRESS", "REVIEW", "DONE"];
+  Future<List<String>> futureSprintNames;
+  List<String> sprintNames;
+  String currentSprint;
+
+  void InitAsyncNames() async {
+    sprintNames = await manager.FetchSprintNames();
+  }
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      boardStates = manager.FetchBoard();
       taskManager = TaskManager();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    InitAsyncNames();
+    setState(() {
+      currentSprint = sprintNames[0];
+      board = manager.FetchBoard(currentSprint);
+    });
     List<BoardList> lists = List<BoardList>.empty(growable: true);
     return Scaffold(
       body: Stack(
         children: [
           Positioned(
             top: 20,
-            left: 60,
+            left: 180,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
@@ -73,10 +87,27 @@ class BoardScreen extends State<BoardWidget> {
               ),
             ),
           ),
+          Positioned(
+            top: 20,
+            left: 60,
+            child: ElevatedButton(
+              onPressed: () {
+                User.currentUser = null;
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
+              },
+              child: Text('Logout'),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // <-- Radius
+                ),
+              ),
+            ),
+          ),
           Padding(
               padding: const EdgeInsets.all(50.0),
               child: FutureBuilder(
-                  future: boardStates,
+                  future: board,
                   // ignore: missing_return
                   builder: (f, snapshot) {
                     if (snapshot.hasData) {
