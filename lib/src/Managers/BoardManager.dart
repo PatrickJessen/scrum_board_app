@@ -5,7 +5,15 @@ import '../Board.dart';
 class BoardManager {
   ApiAccess access = ApiAccess();
 
-  Future<List<BoardState>> FetchBoard() async {
-    return access.FetchBoard();
+  Future<Board> FetchBoard(String boardTitle) async {
+    return access.FetchBoard(boardTitle);
+  }
+
+  Future<List<String>> FetchSprintNames() async {
+    return await access.FetchAllSprintNames();
+  }
+
+  List<String> GetSprintNames() {
+    return FetchSprintNames() as List<String>;
   }
 }
