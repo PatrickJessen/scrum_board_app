@@ -38,7 +38,8 @@ class BoardWidget extends StatefulWidget {
 }
 
 class BoardScreen extends State<BoardWidget> {
-  Future<Board> board = null;
+  Future<Board> futureBoard;
+  Board board;
   BoardManager manager = BoardManager();
   final BoardViewController boardViewController = BoardViewController();
   TaskManager taskManager;
@@ -48,30 +49,65 @@ class BoardScreen extends State<BoardWidget> {
   List<String> sprintNames;
   String currentSprint;
 
-  void InitAsyncNames() async {
-    sprintNames = await manager.FetchSprintNames();
-  }
-
   @override
   void initState() {
     super.initState();
     setState(() {
       taskManager = TaskManager();
+      manager.FetchSprintNames().then((value) {
+        setState(() {
+          sprintNames = value;
+          currentSprint = sprintNames[0];
+          futureBoard = manager.FetchBoard(currentSprint);
+        });
+      });
     });
+  }
+
+  Widget SprintNames() {
+    return FutureBuilder(
+      future: futureSprintNames,
+      // ignore: missing_return
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          currentSprint = snapshot.data[0];
+          sprintNames = snapshot.data;
+          DropdownButton(
+            // Initial Value
+            value: currentSprint,
+
+            // Down Arrow Icon
+            icon: const Icon(Icons.keyboard_arrow_down),
+
+            // Array list of items
+            items: sprintNames.map((String items) {
+              return DropdownMenuItem(
+                value: items,
+                child: Text(items),
+              );
+            }).toList(),
+            // After selecting the desired option,it will
+            // change button value to selected value
+            onChanged: (String newValue) {
+              setState(() {
+                String sprint = newValue;
+                currentSprint = sprint;
+              });
+            },
+          );
+        }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    InitAsyncNames();
-    setState(() {
-      currentSprint = sprintNames[0];
-      board = manager.FetchBoard(currentSprint);
-    });
     List<BoardList> lists = List<BoardList>.empty(growable: true);
     return Scaffold(
       body: Stack(
         children: [
-          Positioned(
+          //SprintNames(),
+          /*Positioned(
             top: 20,
             left: 180,
             child: ElevatedButton(
@@ -99,19 +135,19 @@ class BoardScreen extends State<BoardWidget> {
               child: Text('Logout'),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12), // <-- Radius
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
             ),
-          ),
+          ),*/
           Padding(
               padding: const EdgeInsets.all(50.0),
               child: FutureBuilder(
-                  future: board,
+                  future: manager.FetchBoard(currentSprint),
                   // ignore: missing_return
                   builder: (f, snapshot) {
                     if (snapshot.hasData) {
-                      for (var i in snapshot.data) {
+                      for (var i in states) {
                         lists.add(_createBoardList(i, snapshot));
                       }
                       return BoardView(
@@ -134,16 +170,15 @@ class BoardScreen extends State<BoardWidget> {
         onDropItem: (int listIndex, int itemIndex, int oldListIndex,
             int oldItemIndex, BoardItemState state) {
           //Used to update our local item data
-          var item = snapshot.data[oldListIndex].tasks[oldItemIndex] as Task;
-          snapshot.data[oldListIndex].tasks.removeAt(oldItemIndex);
+          var item = snapshot.data.tasks[oldItemIndex] as Task;
+          snapshot.data.tasks.removeAt(oldItemIndex);
           // can get the title from here to set the enum state
-          item.state = StateUtils.ConvertStringToTaskState(
-              snapshot.data[listIndex].title);
-          snapshot.data[listIndex].tasks.insert(itemIndex, item);
+          item.state = StateUtils.ConvertStringToTaskState(StateUtils.ConvertTaskStateToString(StateUtils.ConvertIntToTaskState(listIndex)));
+          snapshot.data.tasks.insert(itemIndex, item);
           taskManager.UpdateTask(item);
         },
         onTapItem: (int listIndex, int itemIndex, BoardItemState state) async {
-          Task t = snapshot.data[listIndex].tasks[itemIndex];
+          Task t = snapshot.data.tasks[itemIndex];
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => TaskScreenWidget(),
               settings: RouteSettings(arguments: t)));
@@ -178,10 +213,12 @@ class BoardScreen extends State<BoardWidget> {
         ));
   }
 
-  Widget _createBoardList(BoardState state, AsyncSnapshot<dynamic> snapshot) {
+  Widget _createBoardList(String title, AsyncSnapshot<dynamic> snapshot) {
     List<BoardItem> items = List<BoardItem>.empty(growable: true);
-    for (int i = 0; i < state.tasks.length; i++) {
-      items.insert(i, buildBoardItem(state.tasks[i], snapshot));
+    for (int i = 0; i < snapshot.data.tasks.length; i++) {
+      if (title == StateUtils.ConvertTaskStateToString(snapshot.data.tasks[i].state)){
+        items.insert(i, buildBoardItem(snapshot.data.tasks[i], snapshot));
+      }
     }
 
     return BoardList(
@@ -200,7 +237,7 @@ class BoardScreen extends State<BoardWidget> {
             child: Container(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  state.title,
+                  title,
                   style: TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.bold,

@@ -11,11 +11,13 @@ class ApiAccess {
     final uri = Uri.parse(
         'https://localhost:7132/GetScrumboard?boardTitle=$boardTitle');
     Response response = await get(uri);
-    List<dynamic> parsedListJson = json.decode(response.body)['tasks'];
+    //dynamic parsedListJson = json.decode(response.body);
+    dynamic parsedJson = json.decode(response.body);
+    //Board board = (parsedListJson).map((data) => Board.fromJson(data));
     Board board = Board.fromJson(json.decode(response.body));
     //board.tasks = (parsedListJson).map((data) => Board.fromJson(data)).toList();
     if (board == null) {
-      return new Board("null", List<Task>.empty());
+      return new Board(0, "null", List<Task>.empty());
     }
     return board;
   }
@@ -37,9 +39,11 @@ class ApiAccess {
     int points = task.points;
     int state = task.state.index;
     int prio = task.priority.index;
+    int id = task.id;
     http.post(
         Uri.parse(
-            'https://localhost:7132/PostTask?Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&State=$state&Priority=$prio'),
+            'https://localhost:7132/PostTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&State=$state&Priority=$prio'),
+            //https://localhost:7132/PostTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&State=$state&Priority=$prio
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
