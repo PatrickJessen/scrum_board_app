@@ -26,8 +26,10 @@ class NewTaskScreen extends State<NewTaskWidget> {
   TextEditingController title = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController assignedTo = TextEditingController();
+  String sprint;
   @override
   Widget build(BuildContext context) {
+    sprint = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         body: Padding(
             padding: const EdgeInsets.all(50.0),
@@ -138,6 +140,7 @@ class NewTaskScreen extends State<NewTaskWidget> {
         assignedTo.text,
         StateUtils.ConvertStringToTaskState(statesVal),
         StateUtils.ConvertStringToTaskPriority(priorityVal));
+    task.boardTitle = sprint;
     manager.AddTask(task);
   }
 

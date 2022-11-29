@@ -22,6 +22,13 @@ class ApiAccess {
     return board;
   }
 
+  void CreateSprint(String name) {
+    http.post(Uri.parse('https://localhost:7132/PostScrumboard?title=$name'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        });
+  }
+
   Future<List<String>> FetchAllSprintNames() async {
     final uri = Uri.parse('https://localhost:7132/GetSprintNames');
     Response response = await get(uri);
@@ -36,14 +43,15 @@ class ApiAccess {
     String title = task.title;
     String desc = task.description;
     String assign = task.assignedTo;
+    String sprint = task.boardTitle;
     int points = task.points;
     int state = task.state.index;
     int prio = task.priority.index;
     int id = task.id;
     http.post(
         Uri.parse(
-            'https://localhost:7132/PostTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&State=$state&Priority=$prio'),
-            //https://localhost:7132/PostTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&State=$state&Priority=$prio
+            'https://localhost:7132/PostTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&Sprint=$sprint&State=$state&Priority=$prio'),
+        //https://localhost:7132/PostTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&Sprint=sprint&State=$state&Priority=$prio
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });

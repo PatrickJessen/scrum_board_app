@@ -16,4 +16,8 @@ class BoardManager {
   List<String> GetSprintNames() {
     return FetchSprintNames() as List<String>;
   }
+
+  void CreateSprint(String name) {
+    access.CreateSprint(name);
+  }
 }

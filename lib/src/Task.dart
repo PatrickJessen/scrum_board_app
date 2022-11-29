@@ -13,6 +13,7 @@ class Task {
   String assignedTo;
   TaskState state;
   TaskPriority priority;
+  String boardTitle;
 
   Task(String title, String description, int points, String assignedTo,
       TaskState state, TaskPriority priority) {
