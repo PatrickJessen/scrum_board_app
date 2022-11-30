@@ -12,6 +12,7 @@ import '../src/Board.dart';
 import '../src/Managers/TaskManager.dart';
 import '../src/StateUtils.dart';
 import '../src/User.dart';
+import 'DropDownMenu.dart';
 import 'NewTaskScreen.dart';
 import 'TaskScreen.dart';
 
@@ -64,6 +65,9 @@ class BoardScreen extends State<BoardWidget> {
       });
     });
   }
+
+  Task task =
+      Task("test", "test", 0, "test", TaskState.TO_DO, TaskPriority.HIGH);
 
   @override
   Widget build(BuildContext context) {
