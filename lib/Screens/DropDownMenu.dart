@@ -21,7 +21,7 @@ class DropDownMenuState extends State<DropDownMenu> {
 
   List<String> states = ["TODO", "IN PROGRESS", "REVIEW", "DONE"];
   List<String> priorities = ["VERY LOW", "LOW", "MEDIUM", "HIGH", "VERY HIGH"];
-  List<int> fibonacci = [0, 1, 1, 2, 3, 5, 8, 13, 21];
+  List<int> fibonacci = [0, 1, 2, 3, 5, 8, 13, 21];
   TaskManager manager;
 
   @override

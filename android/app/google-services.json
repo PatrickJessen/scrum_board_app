@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "977915521570",
+    "project_id": "flutterproject-5dd44",
+    "storage_bucket": "flutterproject-5dd44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977915521570:android:a000d399ef3360d523787b",
+        "android_client_info": {
+          "package_name": "com.example.scrum_board_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977915521570-i44gefuij0sh99en6qta4as658bpprhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuF3gRnh9oom-r6oiHzF-cq20eSRI5ldc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977915521570-i44gefuij0sh99en6qta4as658bpprhl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
