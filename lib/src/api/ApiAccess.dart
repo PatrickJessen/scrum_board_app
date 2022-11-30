@@ -9,7 +9,7 @@ import '../User.dart';
 class ApiAccess {
   Future<Board> FetchBoard(String boardTitle) async {
     final uri = Uri.parse(
-        'https://localhost:7132/GetScrumboard?boardTitle=$boardTitle');
+        'https://10.0.2.2:7132/GetScrumboard?boardTitle=$boardTitle');
     Response response = await get(uri);
     //dynamic parsedListJson = json.decode(response.body);
     dynamic parsedJson = json.decode(response.body);
@@ -23,14 +23,14 @@ class ApiAccess {
   }
 
   void CreateSprint(String name) {
-    http.post(Uri.parse('https://localhost:7132/PostScrumboard?title=$name'),
+    http.post(Uri.parse('https://10.0.2.2:7132/PostScrumboard?title=$name'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
   }
 
   Future<List<String>> FetchAllSprintNames() async {
-    final uri = Uri.parse('https://localhost:7132/GetSprintNames');
+    final uri = Uri.parse('https://10.0.2.2:7132/GetSprintNames');
     Response response = await get(uri);
     //List<String> parsedListJson = json.decode(response.body);
     List<String> stringList =
@@ -50,7 +50,7 @@ class ApiAccess {
     int id = task.id;
     http.post(
         Uri.parse(
-            'https://localhost:7132/PostTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&Sprint=$sprint&State=$state&Priority=$prio'),
+            'https://10.0.2.2:7132/PostTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&Sprint=$sprint&State=$state&Priority=$prio'),
         //https://localhost:7132/PostTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&Sprint=sprint&State=$state&Priority=$prio
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -68,7 +68,7 @@ class ApiAccess {
     int prio = task.priority.index;
     http.put(
         Uri.parse(
-            'https://localhost:7132/UpdateTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&State=$state&Priority=$prio'),
+            'https://10.0.2.2:7132/UpdateTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&State=$state&Priority=$prio'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
@@ -76,7 +76,7 @@ class ApiAccess {
 
   void DeleteTask(int id) {
     //https://localhost:7132/DeleteTask?id=1
-    http.delete(Uri.parse('https://localhost:7132/DeleteTask?id=$id'),
+    http.delete(Uri.parse('https://10.0.2.2:7132/DeleteTask?id=$id'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
@@ -106,7 +106,7 @@ class ApiAccess {
   Future<User> Login(String username, String password) async {
     Response response = await http.post(
         Uri.parse(
-            'https://localhost:7132/LoginUser?username=$username&password=$password'),
+            'https://10.0.2.2:7132/LoginUser?username=$username&password=$password'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });

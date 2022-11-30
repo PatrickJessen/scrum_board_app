@@ -8,6 +8,7 @@ import 'package:scrum_board_app/Screens/LoginScreen.dart';
 import 'package:scrum_board_app/src/Managers/BoardManager.dart';
 import 'package:scrum_board_app/src/Task.dart';
 import 'package:scrum_board_app/src/api/ApiAccess.dart';
+import 'package:scrum_board_app/src/api/FirebaseAccess.dart';
 import '../src/Board.dart';
 import '../src/Managers/TaskManager.dart';
 import '../src/StateUtils.dart';
@@ -50,6 +51,12 @@ class BoardScreen extends State<BoardWidget> {
   List<String> sprintNames;
   String currentSprint;
   TextEditingController editSprintText;
+  FirebaseAccess firebase;
+
+  void InitFirebase() async {
+      firebase = FirebaseAccess();
+      await firebase.RequestPermission(User.currentUser.username);
+  }
 
   @override
   void initState() {
@@ -57,6 +64,7 @@ class BoardScreen extends State<BoardWidget> {
     setState(() {
       taskManager = TaskManager();
       editSprintText = TextEditingController();
+      InitFirebase();
       manager.FetchSprintNames().then((value) {
         setState(() {
           sprintNames = value;
@@ -65,9 +73,6 @@ class BoardScreen extends State<BoardWidget> {
       });
     });
   }
-
-  Task task =
-      Task("test", "test", 0, "test", TaskState.TO_DO, TaskPriority.HIGH);
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +160,22 @@ class BoardScreen extends State<BoardWidget> {
                     settings: RouteSettings(arguments: currentSprint)));
               },
               child: Text('Add Task'),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // <-- Radius
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 20,
+            left: 300,
+            child: ElevatedButton(
+              onPressed: () async {
+                String token = await firebase.GetUserToken(User.currentUser.username);
+                await firebase.SendPushNotification(token, "hello world", "new notification");
+              },
+              child: Text('push'),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12), // <-- Radius
