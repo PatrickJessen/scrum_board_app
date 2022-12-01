@@ -54,7 +54,7 @@ class TaskScreen extends State<TaskScreenWidget> {
                 ),
               ],
             ),
-            Positioned(
+            const Positioned(
               left: 260,
               child: Text("Title"),
             ),
@@ -83,7 +83,7 @@ class TaskScreen extends State<TaskScreenWidget> {
                     ),
                   ],
                 )),
-            Positioned(
+            const Positioned(
               left: 540,
               child: Text("Description"),
             ),
@@ -109,7 +109,7 @@ class TaskScreen extends State<TaskScreenWidget> {
                     ),
                   ],
                 )),
-            Positioned(
+            const Positioned(
               left: 840,
               child: Text("Assigned To"),
             ),
@@ -135,7 +135,7 @@ class TaskScreen extends State<TaskScreenWidget> {
                     ),
                   ],
                 )),
-            Positioned(
+            const Positioned(
               left: 260,
               top: 100,
               child: Text("State"),
@@ -162,7 +162,7 @@ class TaskScreen extends State<TaskScreenWidget> {
                     ),
                   ],
                 )),
-            Positioned(
+            const Positioned(
               left: 540,
               top: 100,
               child: Text("Priority"),
@@ -189,7 +189,7 @@ class TaskScreen extends State<TaskScreenWidget> {
                     ),
                   ],
                 )),
-            Positioned(
+            const Positioned(
               left: 840,
               top: 100,
               child: Text("Points"),
@@ -223,41 +223,33 @@ class TaskScreen extends State<TaskScreenWidget> {
   }
 
   Widget ReturnButton() {
-    return Positioned(
-      top: 20,
-      left: 60,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => BoardWidget()));
-        },
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // <-- Radius
-          ),
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => BoardWidget()));
+      },
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12), // <-- Radius
         ),
-        child: const Text('Return'),
       ),
+      child: const Text('Return'),
     );
   }
 
   Widget DeleteButton() {
-    return Positioned(
-      top: 60,
-      left: 60,
-      child: ElevatedButton(
-        onPressed: () {
-          tm.DeleteTask(task.id);
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => BoardWidget()));
-        },
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // <-- Radius
-          ),
+    return ElevatedButton(
+      onPressed: () {
+        tm.DeleteTask(task.id);
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => BoardWidget()));
+      },
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12), // <-- Radius
         ),
-        child: const Text('Delete'),
       ),
+      child: const Text('Delete'),
     );
   }
 }
