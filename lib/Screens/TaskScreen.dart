@@ -19,7 +19,6 @@ class TaskScreen extends State<TaskScreenWidget> {
   @override
   void initState() {
     super.initState();
-    //_editingController = TextEditingController(text: task.title);
   }
 
   @override
@@ -32,192 +31,86 @@ class TaskScreen extends State<TaskScreenWidget> {
     task = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Stack(
-          children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    alignment: Alignment.topLeft,
-                    child: ReturnButton(),
+      body: Stack(
+        children: [
+          Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Stack(
+                children: [
+                  Stack(
+                    children: [
+                  Container(
+                      padding: const EdgeInsets.only(left: 5),
+                      alignment: Alignment.topLeft,
+                      child: ReturnButton()),
+                  Container(
+                      padding: const EdgeInsets.only(left: 100),
+                      alignment: Alignment.topLeft,
+                      child: DeleteButton()),
+                    ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: DeleteButton(),
-                  ),
-                ),
-              ],
-            ),
-            const Positioned(
-              left: 260,
-              child: Text("Title"),
-            ),
-            Positioned(
-                left: 160,
-                top: 20,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.topCenter,
-                      width: 240.0,
-                      height: 42.0,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                              width: 1.0, color: Colors.lightBlue.shade600),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: Center(
-                        child: EditText(
-                          type: StringType.TITLE,
-                          task: task,
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
-            const Positioned(
-              left: 540,
-              child: Text("Description"),
-            ),
-            Positioned(
-                left: 460,
-                top: 20,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.topCenter,
-                      width: 240.0,
-                      height: 42.0,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                              width: 1.0, color: Colors.lightBlue.shade600),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: Center(
+                  Container(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Stack(children: [
+                        Container(
+                          padding: const EdgeInsets.only(top: 30),
+                          alignment: Alignment.topLeft,
                           child: EditText(
-                              type: StringType.DESCRIPTION, task: task)),
-                    ),
-                  ],
-                )),
-            const Positioned(
-              left: 840,
-              child: Text("Assigned To"),
-            ),
-            Positioned(
-                left: 760,
-                top: 20,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.topCenter,
-                      width: 240.0,
-                      height: 42.0,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                              width: 1.0, color: Colors.lightBlue.shade600),
+                            type: StringType.TITLE,
+                            task: task,
+                          ),
                         ),
-                        color: Colors.white,
-                      ),
-                      child: Center(
+                        Container(
+                          padding: const EdgeInsets.only(top: 100),
+                          alignment: Alignment.topLeft,
                           child: EditText(
-                              type: StringType.ASSIGNEDTO, task: task)),
-                    ),
-                  ],
-                )),
-            const Positioned(
-              left: 260,
-              top: 100,
-              child: Text("State"),
-            ),
-            Positioned(
-                left: 160,
-                top: 120,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.topCenter,
-                      width: 240.0,
-                      height: 42.0,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                              width: 1.0, color: Colors.lightBlue.shade600),
+                              type: StringType.DESCRIPTION, task: task),
                         ),
-                        color: Colors.white,
-                      ),
-                      child: Center(
+                        Container(
+                          padding: const EdgeInsets.only(top: 170),
+                          alignment: Alignment.topLeft,
                           child:
-                              DropDownMenu(task: task, type: MenuType.STATE)),
-                    ),
-                  ],
-                )),
-            const Positioned(
-              left: 540,
-              top: 100,
-              child: Text("Priority"),
-            ),
-            Positioned(
-                left: 460,
-                top: 120,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.topCenter,
-                      width: 240.0,
-                      height: 42.0,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                              width: 1.0, color: Colors.lightBlue.shade600),
+                              EditText(type: StringType.ASSIGNEDTO, task: task),
                         ),
-                        color: Colors.white,
-                      ),
-                      child: Center(
-                          child: DropDownMenu(
-                              task: task, type: MenuType.PRIORITY)),
-                    ),
-                  ],
-                )),
-            const Positioned(
-              left: 840,
-              top: 100,
-              child: Text("Points"),
-            ),
-            Positioned(
-                left: 760,
-                top: 120,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.topCenter,
-                      width: 240.0,
-                      height: 42.0,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                              width: 1.0, color: Colors.lightBlue.shade600),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: Center(
+                        Container(
+                          padding: const EdgeInsets.only(top: 220),
+                          alignment: Alignment.topLeft,
                           child:
-                              DropDownMenu(task: task, type: MenuType.POINTS)),
-                    ),
-                  ],
-                )),
-          ],
-        ),
+                              DropDownMenu(task: task, type: MenuType.POINTS),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 220, left: 70),
+                          alignment: Alignment.topLeft,
+                          child:
+                              DropDownMenu(task: task, type: MenuType.PRIORITY),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 220, left: 210),
+                          alignment: Alignment.topLeft,
+                          child: DropDownMenu(task: task, type: MenuType.STATE),
+                        ),
+                        const Padding(
+                            padding: EdgeInsets.only(top: 5),
+                            child: Text("Title")),
+                        const Padding(
+                            padding: EdgeInsets.only(top: 70),
+                            child: Text("Description")),
+                        const Padding(
+                            padding: EdgeInsets.only(top: 140),
+                            child: Text("Assign to")),
+                        const Padding(
+                            padding: EdgeInsets.only(top: 210),
+                            child: Text("Points")),
+                        const Padding(
+                            padding: EdgeInsets.only(top: 210, left: 90),
+                            child: Text("Priority")),
+                        const Padding(
+                            padding: EdgeInsets.only(top: 210, left: 240),
+                            child: Text("State")),                        
+                      ])),
+                ],
+              ))
+        ],
       ),
     );
   }

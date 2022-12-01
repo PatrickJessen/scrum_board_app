@@ -76,7 +76,7 @@ class BoardScreen extends State<BoardWidget> {
         children: [
           //SprintNames(),
           Container(
-            alignment: Alignment.topRight,
+            padding: const EdgeInsets.only(top: 30, left: 310),
             child: DropdownButton(
               // Initial Value
               value: currentSprint,
@@ -101,9 +101,8 @@ class BoardScreen extends State<BoardWidget> {
               },
             ),
           ),
-          Positioned(
-            top: 20,
-            left: 300,
+          Container(
+            padding: const EdgeInsets.only(top: 30, left: 205),
             child: ElevatedButton(
               onPressed: () {
                 showDialog(
@@ -145,9 +144,8 @@ class BoardScreen extends State<BoardWidget> {
               ),
             ),
           ),
-          Positioned(
-            top: 20,
-            left: 180,
+          Container(
+            padding: const EdgeInsets.only(top: 30, left: 100),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -162,9 +160,8 @@ class BoardScreen extends State<BoardWidget> {
               ),
             ),
           ),
-          Positioned(
-            top: 20,
-            left: 60,
+          Container(
+            padding: const EdgeInsets.only(top: 30, left: 10),
             child: ElevatedButton(
               onPressed: () {
                 User.currentUser = null;
@@ -180,7 +177,7 @@ class BoardScreen extends State<BoardWidget> {
             ),
           ),
           Padding(
-              padding: const EdgeInsets.all(50.0),
+              padding: const EdgeInsets.only(top: 80),
               child: FutureBuilder(
                   future: manager.FetchBoard(currentSprint),
                   // ignore: missing_return

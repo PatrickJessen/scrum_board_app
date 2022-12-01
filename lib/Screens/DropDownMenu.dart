@@ -36,8 +36,7 @@ class DropDownMenuState extends State<DropDownMenu> {
     switch (type) {
       case MenuType.STATE:
         {
-          return Positioned(
-              child: DropdownButton(
+          return DropdownButton(
             // Initial Value
             value: StateUtils.ConvertTaskStateToString(task.state),
 
@@ -60,12 +59,11 @@ class DropDownMenuState extends State<DropDownMenu> {
               });
               manager.UpdateTask(task);
             },
-          ));
+          );
         }
       case MenuType.PRIORITY:
         {
-          return Positioned(
-              child: DropdownButton(
+          return DropdownButton(
             // Initial Value
             value: StateUtils.ConvertTaskPriorityToString(task.priority),
 
@@ -89,12 +87,11 @@ class DropDownMenuState extends State<DropDownMenu> {
               });
               manager.UpdateTask(task);
             },
-          ));
+          );
         }
       case MenuType.POINTS:
         {
-          return Positioned(
-              child: DropdownButton(
+          return DropdownButton(
             // Initial Value
             value: task.points,
 
@@ -117,7 +114,7 @@ class DropDownMenuState extends State<DropDownMenu> {
               });
               manager.UpdateTask(task);
             },
-          ));
+          );
         }
     }
   }

@@ -49,8 +49,7 @@ class _EditTextState extends State<EditText> {
 
   Widget EditTextField() {
     if (isEditing) {
-      return Center(
-        child: TextField(
+      return TextField(
           onSubmitted: (newValue) {
             setState(() {
               String val = newValue;
@@ -73,8 +72,7 @@ class _EditTextState extends State<EditText> {
           },
           autofocus: true,
           controller: controller,
-        ),
-      );
+        );
     }
     return InkWell(
         onTap: () {
