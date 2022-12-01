@@ -6,6 +6,8 @@ import 'package:scrum_board_app/src/Managers/TaskManager.dart';
 import 'package:scrum_board_app/src/api/ApiAccess.dart';
 import '../src/StateUtils.dart';
 import '../src/Task.dart';
+import '../src/User.dart';
+import '../src/api/FirebaseAccess.dart';
 
 class NewTaskWidget extends StatefulWidget {
   const NewTaskWidget({Key key}) : super(key: key);
@@ -27,109 +29,128 @@ class NewTaskScreen extends State<NewTaskWidget> {
   TextEditingController description = TextEditingController();
   TextEditingController assignedTo = TextEditingController();
   String sprint;
+
+  FirebaseAccess firebase;
+
+  void InitFirebase() {
+    firebase = FirebaseAccess();
+    firebase.RequestPermission(User.currentUser.username);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      InitFirebase();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     sprint = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-        body: Padding(
-            padding: const EdgeInsets.all(50.0),
-            child: Stack(
-              children: [
-                GridView.count(
-                  crossAxisCount: 2,
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Stack(children: [
+      body: Stack(
+        children: [
+          Padding(
+              padding: EdgeInsets.only(top: 50),
+              child: Stack(
+                children: [
+                  Container(
+                      child: Stack(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.only(left: 5),
+                          alignment: Alignment.topLeft,
+                          child: SaveButton()),
+                      Container(
+                          padding: EdgeInsets.only(left: 130),
+                          alignment: Alignment.topLeft,
+                          child: ReturnButton()),
+                    ],
+                  )),
+                  Container(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Stack(
+                        children: [
                           Container(
-                            alignment: Alignment.center,
-                            child: SaveButton(),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: ReturnButton(),
-                          ),
-                          Container(
-                            alignment: Alignment.topRight,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              // ignore: prefer_const_literals_to_create_immutables
-                              children: [
-                                SizedBox(
-                                  width: 200,
-                                  height: 50,
-                                  child: TextField(
-                                    controller: title,
-                                    obscureText: false,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      label: Text.rich(
-                                        TextSpan(children: <InlineSpan>[
-                                          WidgetSpan(child: Text("Title")),
-                                        ]),
-                                      ),
-                                    ),
-                                  ),
+                            padding: EdgeInsets.only(top: 5),
+                            alignment: Alignment.topLeft,
+                            child: TextField(
+                              controller: title,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                label: Text.rich(
+                                  TextSpan(children: <InlineSpan>[
+                                    WidgetSpan(child: Text("Title")),
+                                  ]),
                                 ),
-                                SizedBox(height: 5),
-                                SizedBox(
-                                  width: 200,
-                                  height: 50,
-                                  child: TextField(
-                                    controller: description,
-                                    obscureText: false,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      label: Text.rich(
-                                        TextSpan(children: <InlineSpan>[
-                                          WidgetSpan(
-                                              child: Text("Description")),
-                                        ]),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                SizedBox(
-                                  width: 200,
-                                  height: 50,
-                                  child: TextField(
-                                    controller: assignedTo,
-                                    obscureText: false,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      label: Text.rich(
-                                        TextSpan(children: <InlineSpan>[
-                                          WidgetSpan(child: Text("Assign To")),
-                                        ]),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                           Container(
-                            alignment: Alignment.topCenter,
-                            child: Column(
-                              children: [
-                                Positioned(left: 200, child: Text("State")),
-                                DropDownMenuStates(),
-                                SizedBox(height: 5),
-                                Positioned(left: 200, child: Text("Priority")),
-                                DropDownMenuPriority(),
-                                SizedBox(height: 5),
-                                Positioned(left: 200, child: Text("Points")),
-                                //CustomText("Points", 100, 50),
-                                DropDownMenuFibonacci(),
-                              ],
+                            padding: EdgeInsets.only(top: 80),
+                            alignment: Alignment.topLeft,
+                            child: TextField(
+                              controller: description,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                label: Text.rich(
+                                  TextSpan(children: <InlineSpan>[
+                                    WidgetSpan(child: Text("Description")),
+                                  ]),
+                                ),
+                              ),
                             ),
-                          )
-                        ])),
-                  ],
-                )
-              ],
-            )));
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 155),
+                            alignment: Alignment.topLeft,
+                            child: TextField(
+                              controller: assignedTo,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                label: Text.rich(
+                                  TextSpan(children: <InlineSpan>[
+                                    WidgetSpan(child: Text("Assign To")),
+                                  ]),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(top: 215),
+                              child: Text("State")),
+                          Container(
+                            padding: EdgeInsets.only(top: 230),
+                            alignment: Alignment.topLeft,
+                            child: DropDownMenuStates(),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(top: 215, left: 140),
+                              child: Text("Priority")),
+                          Container(
+                            padding: EdgeInsets.only(top: 230, left: 140),
+                            alignment: Alignment.topLeft,
+                            child: DropDownMenuPriority(),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(top: 215, left: 290),
+                              child: Text("Points")),
+                          Container(
+                            padding: EdgeInsets.only(top: 230, left: 290),
+                            alignment: Alignment.topLeft,
+                            child: DropDownMenuFibonacci(),
+                          ),
+                        ],
+                      )),
+                ],
+              )),
+        ],
+      ),
+    );
   }
 
   void AddTask() {
@@ -145,39 +166,34 @@ class NewTaskScreen extends State<NewTaskWidget> {
   }
 
   Widget ReturnButton() {
-    return Positioned(
-      top: 20,
-      left: 60,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => BoardWidget()));
-        },
-        child: Text('Return'),
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // <-- Radius
-          ),
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => BoardWidget()));
+      },
+      child: Text('Return'),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12), // <-- Radius
         ),
       ),
     );
   }
 
   Widget SaveButton() {
-    return Positioned(
-      top: 20,
-      left: 60,
-      child: ElevatedButton(
-        onPressed: () {
-          AddTask();
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => BoardWidget()));
-        },
-        child: Text('Save Task'),
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // <-- Radius
-          ),
+    return ElevatedButton(
+      onPressed: () async {
+        String user = User.currentUser.username;
+        String msg = "$user Created a new task: ${title.text}";
+        await firebase.SendPushNotification(msg, "new task created");
+        AddTask();
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => BoardWidget()));
+      },
+      child: Text('Save Task'),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12), // <-- Radius
         ),
       ),
     );
@@ -207,8 +223,7 @@ class NewTaskScreen extends State<NewTaskWidget> {
   }
 
   Widget DropDownMenuStates() {
-    return Positioned(
-        child: DropdownButton(
+    return DropdownButton(
       // Initial Value
       value: statesVal,
 
@@ -229,7 +244,7 @@ class NewTaskScreen extends State<NewTaskWidget> {
           statesVal = newValue;
         });
       },
-    ));
+    );
   }
 
   Widget DropDownMenuPriority() {

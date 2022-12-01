@@ -3,6 +3,8 @@ import 'package:boardview/board_item.dart';
 import 'package:boardview/board_list.dart';
 import 'package:boardview/boardview.dart';
 import 'package:boardview/boardview_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:scrum_board_app/Screens/LoginScreen.dart';
 import 'package:scrum_board_app/src/Managers/BoardManager.dart';
@@ -51,12 +53,6 @@ class BoardScreen extends State<BoardWidget> {
   List<String> sprintNames;
   String currentSprint;
   TextEditingController editSprintText;
-  FirebaseAccess firebase;
-
-  void InitFirebase() async {
-      firebase = FirebaseAccess();
-      await firebase.RequestPermission(User.currentUser.username);
-  }
 
   @override
   void initState() {
@@ -64,7 +60,6 @@ class BoardScreen extends State<BoardWidget> {
     setState(() {
       taskManager = TaskManager();
       editSprintText = TextEditingController();
-      InitFirebase();
       manager.FetchSprintNames().then((value) {
         setState(() {
           sprintNames = value;
@@ -90,12 +85,12 @@ class BoardScreen extends State<BoardWidget> {
               icon: const Icon(Icons.keyboard_arrow_down),
 
               // Array list of items
-              items: sprintNames.map((String items) {
+              items: sprintNames?.map((String items) {
                 return DropdownMenuItem(
                   value: items,
                   child: Text(items),
                 );
-              }).toList(),
+              })?.toList(),
               // After selecting the desired option,it will
               // change button value to selected value
               onChanged: (String newValue) {
@@ -160,22 +155,6 @@ class BoardScreen extends State<BoardWidget> {
                     settings: RouteSettings(arguments: currentSprint)));
               },
               child: Text('Add Task'),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12), // <-- Radius
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 20,
-            left: 300,
-            child: ElevatedButton(
-              onPressed: () async {
-                String token = await firebase.GetUserToken(User.currentUser.username);
-                await firebase.SendPushNotification(token, "hello world", "new notification");
-              },
-              child: Text('push'),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12), // <-- Radius
