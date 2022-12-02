@@ -1,5 +1,8 @@
 import 'Task.dart';
 
+/**
+ * Utility class for convertion
+ */
 class StateUtils {
   static String ConvertTaskStateToString(TaskState state) {
     switch (state) {
