@@ -7,13 +7,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 
+/**
+ * This class access the Firebase API/Database
+ * used to send push notifications when a user
+ * changed/created or deleted a task and if
+ * user has started a new sprint
+ */
 class FirebaseAccess {
-  String mToken = "";
-  AndroidNotificationChannel channel;
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  String userToken = "";
+  static String mToken = "";
+  static AndroidNotificationChannel channel;
+  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  static String userToken = "";
 
-  void loadFCM() async {
+  static void loadFCM() async {
     if (!kIsWeb) {
       channel = const AndroidNotificationChannel(
         'high_importance_channel', // id
@@ -44,7 +50,7 @@ class FirebaseAccess {
     }
   }
 
-  void listenFCM() async {
+  static void listenFCM() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;
@@ -67,7 +73,7 @@ class FirebaseAccess {
     });
   }
 
-  Future<void> RequestPermission(String username) async {
+  static Future<void> RequestPermission(String username) async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
@@ -98,7 +104,7 @@ class FirebaseAccess {
     print("User diddnt accept permission");
   }
 
-  void GetToken() async {
+  static void GetToken() async {
     await FirebaseMessaging.instance.getToken().then((token) {
       mToken = token;
       print("getToken() $mToken");
@@ -106,7 +112,7 @@ class FirebaseAccess {
     });
   }
 
-  void SaveToken(String username) async {
+  static void SaveToken(String username) async {
     await FirebaseFirestore.instance
         .collection("UserTokens")
         .doc(username)
@@ -116,7 +122,7 @@ class FirebaseAccess {
     print("Token saved");
   }
 
-  void SendPushNotification(String body, String title) async {
+  static void SendPushNotification(String body, String title) async {
     try {
       await http.post(
         Uri.parse('https://fcm.googleapis.com/fcm/send'),

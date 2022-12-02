@@ -2,6 +2,10 @@ import 'package:scrum_board_app/src/api/ApiAccess.dart';
 
 import '../Board.dart';
 
+/**
+ * Manager class for Board
+ * used to implement any logic (if needed)
+ */
 class BoardManager {
   ApiAccess access = ApiAccess();
 

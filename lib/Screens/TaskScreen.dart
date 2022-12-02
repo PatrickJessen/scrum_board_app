@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scrum_board_app/Screens/DropDownMenu.dart';
 import 'package:scrum_board_app/src/Managers/TaskManager.dart';
+import 'package:scrum_board_app/src/api/FirebaseAccess.dart';
 
 import '../src/Task.dart';
+import '../src/User.dart';
 import 'BoardScreen.dart';
 import 'EditText.dart';
 
@@ -39,14 +41,14 @@ class TaskScreen extends State<TaskScreenWidget> {
                 children: [
                   Stack(
                     children: [
-                  Container(
-                      padding: const EdgeInsets.only(left: 5),
-                      alignment: Alignment.topLeft,
-                      child: ReturnButton()),
-                  Container(
-                      padding: const EdgeInsets.only(left: 100),
-                      alignment: Alignment.topLeft,
-                      child: DeleteButton()),
+                      Container(
+                          padding: const EdgeInsets.only(left: 5),
+                          alignment: Alignment.topLeft,
+                          child: ReturnButton()),
+                      Container(
+                          padding: const EdgeInsets.only(left: 100),
+                          alignment: Alignment.topLeft,
+                          child: DeleteButton()),
                     ],
                   ),
                   Container(
@@ -106,7 +108,7 @@ class TaskScreen extends State<TaskScreenWidget> {
                             child: Text("Priority")),
                         const Padding(
                             padding: EdgeInsets.only(top: 210, left: 240),
-                            child: Text("State")),                        
+                            child: Text("State")),
                       ])),
                 ],
               ))
@@ -134,6 +136,9 @@ class TaskScreen extends State<TaskScreenWidget> {
     return ElevatedButton(
       onPressed: () {
         tm.DeleteTask(task.id);
+        String user = User.currentUser.username;
+        String msg = "$user Deleted a task: ${task.title}";
+        FirebaseAccess.SendPushNotification(msg, "Deleted task");
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => BoardWidget()));
       },

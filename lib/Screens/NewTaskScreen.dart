@@ -30,19 +30,10 @@ class NewTaskScreen extends State<NewTaskWidget> {
   TextEditingController assignedTo = TextEditingController();
   String sprint;
 
-  FirebaseAccess firebase;
-
-  void InitFirebase() {
-    firebase = FirebaseAccess();
-    firebase.RequestPermission(User.currentUser.username);
-  }
-
   @override
   void initState() {
     super.initState();
-    setState(() {
-      InitFirebase();
-    });
+    setState(() {});
   }
 
   @override
@@ -185,7 +176,7 @@ class NewTaskScreen extends State<NewTaskWidget> {
       onPressed: () async {
         String user = User.currentUser.username;
         String msg = "$user Created a new task: ${title.text}";
-        await firebase.SendPushNotification(msg, "new task created");
+        await FirebaseAccess.SendPushNotification(msg, "new task created");
         AddTask();
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => BoardWidget()));

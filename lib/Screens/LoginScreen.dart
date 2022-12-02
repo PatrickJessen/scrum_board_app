@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:scrum_board_app/Screens/BoardScreen.dart';
 import 'package:scrum_board_app/src/Managers/LoginManager.dart';
+import 'package:scrum_board_app/src/api/FirebaseAccess.dart';
 
 import '../src/User.dart';
 
@@ -105,6 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                       if (User.currentUser != null) {
                                         errorMsg = "";
+                                        FirebaseAccess.RequestPermission(
+                                            User.currentUser.username);
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =>

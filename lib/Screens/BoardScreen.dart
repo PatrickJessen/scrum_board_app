@@ -122,6 +122,11 @@ class BoardScreen extends State<BoardWidget> {
                             ElevatedButton(
                               onPressed: () {
                                 manager.CreateSprint(editSprintText.text);
+                                String user = User.currentUser.username;
+                                String msg =
+                                    "$user Started a new sprint: ${editSprintText}";
+                                FirebaseAccess.SendPushNotification(
+                                    msg, "New sprint started");
                                 editSprintText.text = "";
                                 Navigator.of(context).pop();
                               },

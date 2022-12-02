@@ -5,6 +5,10 @@ import 'package:http/http.dart';
 import 'StateUtils.dart';
 import 'Task.dart';
 
+/**
+ * This class represents each board state like TODO, In Progress etc..
+ * wich stores tasks with the same state
+ */
 class BoardState {
   String title;
   TaskState state;
@@ -17,6 +21,11 @@ class BoardState {
   }
 }
 
+/**
+ * This class represents the whole sprint board
+ * It takes all the tasks wich will later be sorted
+ * into its own BoardState
+ */
 class Board {
   int id;
   String title;

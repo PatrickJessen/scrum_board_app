@@ -6,16 +6,17 @@ import '../Board.dart';
 import '../Task.dart';
 import '../User.dart';
 
+/**
+ * This class access the API used to get information
+ * for board/tasks and users
+ */
 class ApiAccess {
   Future<Board> FetchBoard(String boardTitle) async {
-    final uri = Uri.parse(
-        'https://10.0.2.2:7132/GetScrumboard?boardTitle=$boardTitle');
+    final uri =
+        Uri.parse('https://10.0.2.2:7132/GetScrumboard?boardTitle=$boardTitle');
     Response response = await get(uri);
-    //dynamic parsedListJson = json.decode(response.body);
     dynamic parsedJson = json.decode(response.body);
-    //Board board = (parsedListJson).map((data) => Board.fromJson(data));
     Board board = Board.fromJson(json.decode(response.body));
-    //board.tasks = (parsedListJson).map((data) => Board.fromJson(data)).toList();
     if (board == null) {
       return new Board(0, "null", List<Task>.empty());
     }
@@ -51,14 +52,12 @@ class ApiAccess {
     http.post(
         Uri.parse(
             'https://10.0.2.2:7132/PostTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&Sprint=$sprint&State=$state&Priority=$prio'),
-        //https://localhost:7132/PostTask?Id=$id&Title=$title&Description=$desc&Points=$points&AssignedTo=$assign&Sprint=sprint&State=$state&Priority=$prio
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
   }
 
   void UpdateTask(Task task) {
-    //https://localhost:7132/UpdateTask?Id=1&Title=newest%20title&Description=newest%20desc&Points=3&AssignedTo=me&State=0&Priority=2
     int id = task.id;
     String title = task.title;
     String desc = task.description;
@@ -75,7 +74,6 @@ class ApiAccess {
   }
 
   void DeleteTask(int id) {
-    //https://localhost:7132/DeleteTask?id=1
     http.delete(Uri.parse('https://10.0.2.2:7132/DeleteTask?id=$id'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
