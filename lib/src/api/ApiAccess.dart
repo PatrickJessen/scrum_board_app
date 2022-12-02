@@ -11,6 +11,9 @@ import '../User.dart';
  * for board/tasks and users
  */
 class ApiAccess {
+  /**
+   * Used to fetch a board from API from given name in parameters
+   */
   Future<Board> FetchBoard(String boardTitle) async {
     final uri =
         Uri.parse('https://10.0.2.2:7132/GetScrumboard?boardTitle=$boardTitle');
@@ -23,6 +26,9 @@ class ApiAccess {
     return board;
   }
 
+  /**
+   * Used to post a new sprint with given name in the parameter
+   */
   void CreateSprint(String name) {
     http.post(Uri.parse('https://10.0.2.2:7132/PostScrumboard?title=$name'),
         headers: <String, String>{
@@ -30,6 +36,9 @@ class ApiAccess {
         });
   }
 
+  /**
+   * Returns a list of all the sprint names from API
+   */
   Future<List<String>> FetchAllSprintNames() async {
     final uri = Uri.parse('https://10.0.2.2:7132/GetSprintNames');
     Response response = await get(uri);
@@ -40,6 +49,9 @@ class ApiAccess {
     return stringList;
   }
 
+  /**
+   * Used to post a new task with the informations given in the parameter
+   */
   void PostTask(Task task) {
     String title = task.title;
     String desc = task.description;
@@ -57,6 +69,9 @@ class ApiAccess {
         });
   }
 
+  /**
+   * Used to update an existing task with the informations given in the parameter
+   */
   void UpdateTask(Task task) {
     int id = task.id;
     String title = task.title;
@@ -73,6 +88,9 @@ class ApiAccess {
         });
   }
 
+  /**
+   * Used to delete a task that contains the id in the parameter
+   */
   void DeleteTask(int id) {
     http.delete(Uri.parse('https://10.0.2.2:7132/DeleteTask?id=$id'),
         headers: <String, String>{
@@ -80,6 +98,9 @@ class ApiAccess {
         });
   }
 
+  /**
+   * Used to sort states to make TODO in first place of the array given in parameter
+   */
   List<BoardState> SortStates(List<BoardState> states) {
     List<BoardState> tempList = states;
     for (int i = 0; i < tempList.length; i++) {
@@ -101,6 +122,10 @@ class ApiAccess {
     return tempList;
   }
 
+  /**
+   * Used to login an user
+   * Returns the logged in user
+   */
   Future<User> Login(String username, String password) async {
     Response response = await http.post(
         Uri.parse(
